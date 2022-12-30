@@ -1,0 +1,102 @@
+<div class="layout-topbar">
+    <a href="#" id="topbar-menu-button" (click)="app.onMenuButtonClick($event)">
+        <i class="pi pi-angle-left arrow"></i>
+        <i class="pi pi-angle-up mobile"></i>
+    </a>
+
+    <div class="search-input">
+        <i class="pi pi-search icon-search"></i>
+        <input type="text" class="text-white" placeholder="Buscar..." />
+    </div>
+
+    <a href="/" class="logo-container">
+        <img class="h-2rem" src="assets/layout/images/project/logo_01.png" alt="Inmueblesitos_logo" />
+    </a>
+
+    <a *ngIf="sessionState" id="topbar-profile-menu-button" href="#" (click)="app.onTopbarMenuButtonClick($event)">
+        <span>Ismael SL</span>
+        <img src="assets/layout/images/project/ava_01.jpg" alt="ecuador-layout" class="topbar-profile" />
+        <i class="pi pi-caret-down"></i>
+    </a>
+
+    <ul id="topbar-usermenu" class="fadeInDown animated" [ngClass]="{'usermenu-active': app.topbarMenuActive}">
+        <li>
+            <a href="#" (click)="app.onTopbarSubItemClick($event)">
+                <i class="pi pi-fw pi-user"></i>
+                <span class="topbar-item-name">Perfil</span>
+                <span class="topbar-submenuitem-badge">4</span>
+            </a>
+        </li>
+        <li #settings [ngClass]="{'menuitem-active':app.activeTopbarItem === settings}">
+            <a href="#" (click)="app.onTopbarItemClick($event, settings)">
+                <i class="pi pi-fw pi-cog"></i>
+                <span class="topbar-item-name">Configuraci&oacute;n</span>
+            </a>
+            <ul>
+                <li role="menuitem">
+                    <a href="#" (click)="app.onTopbarSubItemClick($event)">
+                        <i class="pi pi-fw pi-palette"></i>
+                        <span>Solicitar ayuda</span>
+                    </a>
+                </li>
+                <li role="menuitem">
+                    <a href="#" (click)="app.onTopbarSubItemClick($event)">
+                        <i class="pi pi-fw pi-star"></i>
+                        <span>Favoritos</span>
+                    </a>
+                </li>
+                <li role="menuitem">
+                    <a href="#" (click)="app.onTopbarSubItemClick($event)">
+                        <i class="pi pi-fw pi-lock"></i>
+                        <span>Ajustes de la cuenta</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li #messages [ngClass]="{'menuitem-active':app.activeTopbarItem === messages}">
+            <a href="#" (click)="app.onTopbarItemClick($event, messages)">
+                <i class="pi pi-fw pi-envelope"></i>
+                <span class="topbar-item-name">Mensajes</span>
+            </a>
+            <ul>
+                <li role="menuitem">
+                    <a href="#" class="topbar-message" (click)="app.onTopbarSubItemClick($event)">
+                        <img src="assets/layout/images/avatar-brooke.png" alt="ecuador-layout" width="25" />
+                        <span>Tengamos una cita</span>
+                    </a>
+                </li>
+                <li role="menuitem">
+                    <a href="#" class="topbar-message" (click)="app.onTopbarSubItemClick($event)">
+                        <img src="assets/layout/images/avatar-tom.png" alt="ecuador-layout" width="25" />
+                        <span>Detalles de compra</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li #notifications [ngClass]="{'menuitem-active':app.activeTopbarItem === notifications}">
+            <a href="#">
+                <i class="pi pi-fw pi-bell"></i>
+                <span class="topbar-item-name">Notificaciones</span>
+                <span class="topbar-submenuitem-badge">2</span>
+            </a>
+        </li>
+        <li #logout>
+            <a (click)="login()">
+                <i class="pi pi-fw pi-sign-out"></i>
+                <span class="topbar-item-name">Cerrar sesi&oacute;n</span>
+            </a>
+        </li>
+    </ul>
+
+    <a *ngIf="!sessionState" id="topbar-profile-menu-button" (click)="showResponsiveDialog()">
+        <span>Iniciar Sesi&oacute;n</span>
+        <i class="pi pi-user"></i>
+    </a>
+    <p-dialog header="Login" [(visible)]="displayResponsive" modal="modal" [breakpoints]="{'960px': '75vw'}"
+        [style]="{width: '25vw'}" [draggable]="false" [resizable]="false">
+        <app-login></app-login>
+        <div class="px-4 m-0 py-0">
+            <button pButton pRipple label="Entrar" icon="pi pi-user" class="w-full" (click)="login()"></button>
+        </div>
+    </p-dialog>
+</div>

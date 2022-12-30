@@ -1,0 +1,26 @@
+/* Works on Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #ff9807 rgb(240, 240, 240);
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgb(240, 240, 240);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #ff9807;
+    border-radius: 15px;
+    border: 0px solid rgb(240, 240, 240);
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}

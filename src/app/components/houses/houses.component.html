@@ -1,0 +1,119 @@
+<div class="surface-section px-4 py-4 md:px-6 lg:px-6 mb-5">
+    <div class="text-700 text-center">
+        <div class="text-blue-600 font-bold mb-3">
+            <i class="pi pi-google"></i>&nbsp;POWERED BY ANGULAR & PRIMENG&nbsp;<i class="pi pi-prime"></i>
+        </div>
+        <div class="text-900 font-bold text-3xl mb-3">Encuentre la casa de sus sueños</div>
+        <div class="text-700 text-xl mb-5">Contamos con una gran variedad de inmuebles en distintos fraccionamientos del
+            estado. ¡Aceptamos cualquier tipo de crédito!</div>
+    </div>
+    <!-- Lista de casas -->
+    <div class="grid p-3">
+        <div class="col-12">
+            <div class="surface-card">
+                <p-dataView #dv [value]="inmuebles" [paginator]="true" [rows]="9" layout="grid">
+                    <ng-template pTemplate="header">
+                        <!-- Formulario  -->
+                        <div class="grid py-3 px-2 flex-column md:flex-row align-items-center justify-content-between">
+                            <div class="gap-5 flex md:flex-row md:mb-0 sm:mb-4 xs:mb-4">
+                                <!-- Filtro -->
+                                <div>
+                                    <label for="" class="mr-1">Filtrar por: </label>
+                                    <p-dropdown [(ngModel)]="selectedFiltro" [options]="filtros"
+                                        placeholder="Selecciona un Filtro" optionLabel="label" optionValue="value">
+                                    </p-dropdown>
+                                </div>
+                                <!-- Por Estado -->
+                                <div *ngIf="selectedFiltro === 'e'">
+                                    <label for="" class="mr-1">Estado: </label>
+                                    <p-dropdown [(ngModel)]="selectedEstado" [options]="estados" 
+                                        placeholder="Selecciona un estado" optionLabel="label" optionValue="value">
+                                    </p-dropdown>
+                                </div>
+                                <!-- Por Precio -->
+                                <div *ngIf="selectedFiltro === 'p'">
+                                    <label for="" class="mr-1">Precio: </label>
+                                    <p-inputNumber mode="decimal" [(ngModel)]="price" [showButtons]="true" mode="currency" currency="MXN"
+                                        [step]="50000.00" [min]="0.00" [minFractionDigits]="2" [maxFractionDigits]="2"
+                                        placeholder="$150,000.00" pTooltip="Inmuebles con un precio mayor a:" tooltipPosition="top">
+                                    </p-inputNumber>
+                                </div>
+
+                                <button pButton pRipple label="Filtrar" *ngIf="selectedFiltro !== ''" icon="pi pi-search"
+                                    class="p-button-rounded p-2 bg-orange-500 border-none" (click)="onSubmit()"></button>
+                                <button pButton pRipple label="Borrar filtros" *ngIf="btnCleanFilters" icon="pi pi-times"
+                                    class="p-button-rounded p-2" (click)="getListInmuebles()"></button>
+                            </div>
+
+                            <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                        </div>
+                    </ng-template>
+                    <!-- Lista -->
+                    <ng-template let-inmueble pTemplate="listItem">
+                        <div class="col-12">
+                            <div class="flex flex-column md:flex-row align-items-center p-3 my-2 w-full hover:shadow-6 transition-duration-500">
+                                <img [src]="'assets/layout/images/project/' + inmueble.imgFachada"
+                                    [alt]="inmueble.nombreCasa" class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5" />
+                                <div class="flex-1 text-center md:text-left">
+                                    <div class="font-bold text-2xl">{{inmueble.nombreCasa}}
+                                        <span
+                                            [class]="(inmueble.disponibilidad === 'Disponible') ? 'text-sm px-2 py-1 text-white bg-green-400' : 'text-sm px-2 py-1 text-white bg-red-400'">
+                                            {{inmueble.disponibilidad}}
+                                        </span>
+                                    </div>
+                                    <div class="mb-3">{{inmueble.descripcionCasa}}</div>
+                                    <p-rating [ngModel]="stars" class="bg-yellow-500 text-yellow-500" [readonly]="true"
+                                        [cancel]="false"></p-rating>
+                                    <div class="flex align-items-center mt-2">
+                                        <i class="pi pi-tag mr-2"></i>
+                                        <span class="font-semibold">{{inmueble.fraccionamiento.ciudad}}</span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+                                    <span class="text-2xl font-semibold mb-2 align-self-center md:align-self-end">
+                                        <span class="text-orange-500">$&nbsp;</span>{{inmueble.precio}}
+                                    </span>
+                                    <a routerLink="/details" pButton pRipple label="Ver más" icon="pi pi-arrow-up-right" class=" p-button-raised"
+                                        [disabled]="inmueble.disponibilidad !== 'Disponible'"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <!-- Grid -->
+                    <ng-template let-inmueble pTemplate="gridItem">
+                        <div class="col-12 md:col-4">
+                            <div class="card m-3 border-none shadow-0 hover:shadow-6 transition-duration-500">
+                                <div class="flex align-items-center justify-content-between">
+                                    <div class="flex align-items-center">
+                                        <i class="pi pi-tag mr-2"></i>
+                                        <span class="font-semibold">{{inmueble.fraccionamiento.ciudad}}</span>
+                                    </div>
+                                    <span
+                                        [class]="(inmueble.disponibilidad === 'Disponible') ? 'font-semibold p-2 sm:ml-2 text-white bg-green-400' : 'font-semibold p-2 sm:ml-2 text-white bg-red-400'">
+                                        {{inmueble.disponibilidad}}
+                                    </span>
+                                </div>
+                                <div class="text-center">
+                                    <img [src]="'assets/layout/images/project/' + inmueble.imgFachada"
+                                        [alt]="inmueble.nombreCasa" class="w-9 shadow-2 my-3 mx-0" />
+                                    <div class="text-2xl font-bold">{{inmueble.nombreCasa}}</div>
+                                    <div class="mb-3">{{inmueble.descripcionCasa}}</div>
+                                    <p-rating [ngModel]="stars" class="bg-yellow-500 text-yellow-500" [readonly]="true"
+                                        [cancel]="false"></p-rating>
+                                </div>
+                                <div class="flex align-items-center justify-content-between">
+                                    <span class="text-2xl font-semibold">
+                                        <span class="text-orange-500">$&nbsp;</span>{{inmueble.precio}}
+                                    </span>
+                                    <a routerLink="/details" pButton pRipple label="Ver más" icon="pi pi-arrow-up-right" class=" p-button-raised"
+                                        [disabled]="inmueble.disponibilidad !== 'Disponible'"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dataView>
+            </div>
+        </div>
+    </div>
+</div>
